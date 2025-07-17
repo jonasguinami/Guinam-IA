@@ -1,0 +1,467 @@
+/* stylegeneratoria.css */
+
+/* --- Variáveis e Estilos Globais --- */
+:root {
+    --bg-color-dark: #121212; /* Fundo principal bem escuro (mais profundo) */
+    --card-bg-color-dark: #1E1E1E; /* Fundo dos elementos (janela de chat, input) - mais sutil */
+    --text-color-light: #E0E0E0; /* Cor do texto claro para contraste */
+    --text-color-dark-muted: #B0B0B0; /* Cor do texto mais escuro (para placeholders, labels) */
+    --user-message-bg: #8E44AD; /* Roxo vibrante para mensagens do usuário (Cor Gemini) */
+    --ai-message-bg: #303030; /* Cinza escuro para mensagens da IA (Mais suave) */
+    --border-color: #3A3A3A; /* Cor da borda sutil, mais escura */
+    --accent-color: #A060C0; /* Um tom ligeiramente mais claro para o roxo de destaque */
+    --send-button-bg: #8E44AD; /* Botão de enviar com cor de destaque */
+    --send-icon-color: #FFFFFF; /* Ícone de enviar branco puro */
+    --clear-button-bg: #6A1B9A; /* Cor para o botão de limpar, um roxo mais escuro */
+
+    /* Bordas arredondadas - ajustadas para um look mais moderno e compacto */
+    --border-radius-lg: 16px; 
+    --border-radius-md: 10px; 
+    --border-radius-sm: 6px; 
+
+    /* Tamanhos de fonte - ajustados para mais clareza */
+    --font-size-sm: 0.85rem;
+    --font-size-md: 0.95rem;
+    --font-size-lg: 1.05rem;
+    --font-size-xl: 1.6rem;
+
+    /* Variáveis para tamanho do botão e ícone */
+    --button-size-mobile: 42px; 
+    --button-size-desktop: 48px; 
+    --send-icon-size-mobile: 18px; 
+    --send-icon-size-desktop: 20px;
+
+    /* Tamanho para ícones de like/dislike - ligeiramente menores para mais discrição */
+    --feedback-icon-size: 20px; 
+}
+
+/* --- Estilos base (Mobile-First) --- */
+* {
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif; 
+    -webkit-font-smoothing: antialiased; /* Suaviza fontes no WebKit */
+    -moz-osx-font-smoothing: grayscale;  /* Suaviza fontes no Firefox */
+}
+
+body {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-light); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 10vh;
+    padding: 5px; 
+    overflow: hidden; /* Evita scroll lateral indesejado */
+}
+
+.container {
+    background-color: var(--card-bg-color-dark);
+    border-radius: var(--border-radius-lg); 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); /* Sombra mais profunda */
+    width: 100%; 
+    max-width: 900px; /* Reduz ligeiramente a largura máxima para um visual mais compacto */
+    height: 99vh; /* Altura fixa para manter o layout no mobile e desktop */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Garante que o conteúdo não vaze */
+    border: 1px solid var(--border-color); 
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-color-light);
+    padding: 12px 15px; /* Padding ajustado */
+    border-bottom: 1px solid var(--border-color);
+    margin: 0;
+    font-weight: 600; 
+    background-color: #222222; 
+    border-top-left-radius: var(--border-radius-lg); 
+    border-top-right-radius: var(--border-radius-lg);
+    font-size: var(--font-size-xl); /* Fonte maior para o título */
+    letter-spacing: 0.5px;
+}
+
+.chat-window {
+    flex-grow: 1;
+    padding: 10px 15px; /* Padding reduzido para mais mensagens visíveis */
+    overflow-y: auto;
+    border-bottom: 1px solid var(--border-color);
+    display: flex; 
+    flex-direction: column; 
+    gap: 6px; /* Espaçamento menor entre as mensagens para compactar */
+    scroll-behavior: smooth; /* Rolagem suave ao carregar mensagens */
+}
+
+/* Esconde a barra de rolagem mas mantém a funcionalidade */
+.chat-window::-webkit-scrollbar {
+    display: none;
+}
+.chat-window {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Container de cada mensagem para posicionar feedback */
+.message-container {
+    display: flex;
+    align-items: flex-end; /* Alinha os botões de feedback à base da mensagem */
+    gap: 4px; /* Espaçamento menor entre mensagem e botões de feedback */
+    margin-bottom: 0px; /* Removido margin-bottom para compactar */
+    padding: 4px 0; /* Pequeno padding para espaçamento vertical */
+}
+
+.message-container.user {
+    justify-content: flex-end;
+}
+
+.message-container.ia { 
+    justify-content: flex-start;
+}
+
+.message {
+    padding: 8px 14px; /* Padding reduzido da caixa de mensagem */
+    border-radius: var(--border-radius-md); 
+    max-width: 80%; /* Levemente menor para acomodar os botões de feedback */
+    word-wrap: break-word; 
+    line-height: 1.4; /* Line height ajustado para melhor leitura */
+    font-size: var(--font-size-md); /* Fonte ligeiramente maior */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); /* Sombra mais definida */
+}
+
+.message.user {
+    background-color: var(--user-message-bg);
+    color: var(--text-color-light); 
+    border-bottom-right-radius: var(--border-radius-sm); /* Borda mais arredondada */
+    border-top-left-radius: var(--border-radius-md); 
+    border-top-right-radius: var(--border-radius-md);
+    border-bottom-left-radius: var(--border-radius-md);
+}
+
+.message.ia { 
+    background-color: var(--ai-message-bg);
+    color: var(--text-color-light);
+    border-bottom-left-radius: var(--border-radius-sm); /* Borda mais arredondada */
+    border-top-left-radius: var(--border-radius-md); 
+    border-top-right-radius: var(--border-radius-md);
+    border-bottom-right-radius: var(--border-radius-md);
+}
+
+/* Estilos para os botões de feedback (like/dislike) */
+.feedback-buttons {
+    display: flex;
+    gap: 3px; 
+    align-items: center;
+    margin-left: 5px; /* Espaçamento do lado esquerdo para mensagens da IA */
+    margin-right: 5px; /* Espaçamento do lado direito para mensagens do Usuário */
+    opacity: 0.7; 
+    transition: opacity 0.2s ease-in-out;
+}
+
+.message-container.user .feedback-buttons {
+    order: -1; /* Coloca os botões à esquerda da mensagem do usuário */
+    margin-left: 0;
+    margin-right: 5px;
+}
+
+.feedback-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; 
+    width: var(--feedback-icon-size); 
+    height: var(--feedback-icon-size);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+    opacity: 1; 
+}
+
+.feedback-buttons button:hover {
+    transform: scale(1.2); 
+    opacity: 1; 
+}
+
+.feedback-buttons img {
+    width: 100%; 
+    height: 100%;
+    object-fit: contain; 
+    filter: grayscale(100%) brightness(1.7); 
+    transition: filter 0.2s ease-in-out;
+}
+
+.dislike-btn img {
+    transform: rotate(180deg); 
+}
+
+/* Cores VERDE para LIKE ativo e VERMELHO para DISLIKE ativo */
+.like-btn.active img {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.5)) 
+            invert(50%) sepia(100%) saturate(700%) hue-rotate(80deg) brightness(1) contrast(1); 
+}
+
+.dislike-btn.active img {
+    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5)) 
+            invert(40%) sepia(100%) saturate(700%) hue-rotate(320deg) brightness(1) contrast(1); 
+}
+
+/* Estilo para a área de input e botão de enviar */
+.input-area {
+    display: flex;
+    align-items: center; 
+    padding: 10px 15px; 
+    border-top: 1px solid var(--border-color);
+    background-color: #222222; 
+    border-bottom-left-radius: var(--border-radius-lg); 
+    border-bottom-right-radius: var(--border-radius-lg);
+}
+
+#userInput {
+    flex-grow: 1;
+    padding: 10px 15px; 
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg); 
+    margin-right: 10px; 
+    font-size: var(--font-size-md); 
+    background-color: #383838; 
+    color: var(--text-color-light); 
+    outline: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease; 
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); 
+}
+
+#userInput:focus {
+    border-color: var(--accent-color);
+    background-color: #404040; 
+}
+
+#userInput::placeholder {
+    color: var(--text-color-dark-muted); 
+}
+
+#sendMessageBtn {
+    background-color: var(--send-button-bg);
+    border: none;
+    border-radius: 50%; 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--button-size-mobile); 
+    height: var(--button-size-mobile); 
+    padding: 0; 
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4); 
+    outline: none; 
+}
+
+#sendMessageBtn:hover {
+    background-color: var(--accent-color); 
+    transform: translateY(-1px) scale(1.02); 
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+}
+
+#sendMessageBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+#sendMessageBtn .send-icon {
+    width: var(--send-icon-size-mobile); 
+    height: var(--send-icon-size-mobile);
+    /* Removido o filtro invert(100%) para usar a cor original do SVG */
+    transition: transform 0.3s ease;
+}
+
+#sendMessageBtn:hover .send-icon {
+    transform: scale(1.1);
+}
+
+/* Estilo para o botão de Excluir Histórico */
+.clear-history-btn {
+    background-color: var(--clear-button-bg); 
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md); 
+    padding: 8px 18px; 
+    margin: 10px auto 15px auto; 
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    align-self: center; 
+    display: block; 
+}
+
+.clear-history-btn:hover {
+    background-color: #8B008B; 
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.clear-history-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+
+/* --- Media Query para Telas Maiores (Tablets e Desktops) --- */
+@media (min-width: 768px) {
+    body {
+        padding: 30px; 
+    }
+
+    .container {
+        height: 85vh; 
+        max-height: 800px; 
+    }
+
+    h1 {
+        padding: 15px 25px; 
+        font-size: 1.7rem; 
+    }
+
+    .chat-window {
+        padding: 15px 20px; 
+        gap: 8px; 
+    }
+
+    .message {
+        padding: 10px 16px;
+        max-width: 75%; 
+        font-size: var(--font-size-lg); 
+    }
+    
+    /* REMOVIDO: Margens que empurravam a mensagem para deixar espaço para o botão de scroll */
+    /* Estas regras estavam causando o "empurrar" para a direita/esquerda da caixa de mensagem */
+    /* .message-container.ia .message { */
+    /* margin-right: 50px; */
+    /* } */
+    /* .message-container.user .message { */
+    /* margin-left: 50px; */
+    /* } */
+
+
+    .input-area {
+        padding: 15px 25px;
+    }
+
+    #userInput {
+        padding: 12px 20px;
+        margin-right: 15px;
+        font-size: var(--font-size-lg);
+    }
+
+    #sendMessageBtn {
+        width: var(--button-size-desktop); 
+        height: var(--button-size-desktop);
+    }
+
+    #sendMessageBtn .send-icon {
+        width: var(--send-icon-size-desktop); 
+        height: var(--send-icon-size-desktop);
+    }
+    
+    .clear-history-btn {
+        padding: 12px 25px;
+        margin: 15px auto 20px auto; 
+        font-size: var(--font-size-lg);
+    }
+}
+
+
+/* Scroll to Bottom Button - POSICIONAMENTO E ESTILO (CORRIGIDO PARA SER REDONDO E CENTRALIZADO) */
+.scroll-to-bottom-btn {
+    display: none; /* Inicialmente escondido */
+    position: absolute; 
+    bottom: 180px; /* Posição um pouco acima do input-area no mobile */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Ajusta para centralizar de verdade */
+    
+    background-color: var(--accent-color); /* Cor roxa */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Torna-o redondo */
+    width: 48px; /* Tamanho do botão */
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Sombra para o botão flutuante */
+    z-index: 10; 
+    transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+    opacity: 0; 
+    pointer-events: none; 
+}
+
+.scroll-to-bottom-btn.show {
+    opacity: 1; 
+    pointer-events: auto; 
+    transform: translateX(-50%) translateY(-5px); /* Efeito de 'pop' */
+}
+
+.scroll-to-bottom-btn:hover {
+    background-color: #9C52B6; /* Um tom ligeiramente mais claro no hover */
+    transform: translateX(-50%) translateY(-8px); /* Mantém centralizado e levanta mais no hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.scroll-to-bottom-btn .scroll-icon {
+    width: 24px; 
+    height: 24px;
+    filter: invert(100%); /* Mantém o ícone branco */
+}
+
+/* Ajustes no .container para permitir posicionamento absoluto do botão de scroll */
+.container {
+    position: relative; 
+    overflow: hidden; 
+}
+
+/* Ajustes de responsividade - MOBILE */
+@media (max-width: 767px) {
+    .chat-window {
+        max-height: calc(100vh - 200px); /* Ajuste mais preciso para mobile */
+        padding: 8px 12px;
+        gap: 4px;
+    }
+    .message {
+        font-size: var(--font-size-sm);
+        padding: 7px 12px;
+    }
+    .input-area {
+        padding: 8px 12px;
+    }
+    #userInput {
+        padding: 8px 12px;
+        font-size: var(--font-size-sm);
+        margin-right: 8px;
+    }
+    #sendMessageBtn {
+        width: var(--button-size-mobile); 
+        height: var(--button-size-mobile);
+    }
+    #sendMessageBtn .send-icon {
+        width: var(--send-icon-size-mobile); 
+        height: var(--send-icon-size-mobile);
+    }
+    .scroll-to-bottom-btn {
+        bottom: 120px; /* Ajuste para mobile, mais perto do input */
+        width: 40px;
+        height: 40px;
+    }
+    .scroll-to-bottom-btn .scroll-icon {
+        width: 18px;
+        height: 18px;
+    }
+    .clear-history-btn {
+        padding: 7px 15px;
+        margin: 8px auto 12px auto;
+        font-size: var(--font-size-sm);
+    }
+}
